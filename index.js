@@ -5,7 +5,12 @@ const socketIo = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "*", // Permitir solicitudes desde cualquier origen
+    methods: ["GET", "POST"]
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 
@@ -28,7 +33,7 @@ app.post('/data', (req, res) => {
   res.status(200).send({ message: "Datos recibidos correctamente", muscle, value });
 });
 
-// Iniciar el servidor y escuchar conexiones WebSocket
+// Manejo de conexiones WebSocket
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
@@ -37,6 +42,7 @@ io.on('connection', (socket) => {
   });
 });
 
+// Iniciar el servidor en el puerto asignado
 server.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
