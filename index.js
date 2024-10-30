@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const cors = require('cors'); // Importa CORS
 
 const app = express();
 const server = http.createServer(app);
@@ -13,6 +14,8 @@ const io = socketIo(server, {
 });
 
 const PORT = process.env.PORT || 3000;
+
+app.use(cors());
 
 // Middleware para interpretar JSON
 app.use(express.json());
